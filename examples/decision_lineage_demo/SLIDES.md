@@ -249,6 +249,41 @@ style: |
   .accent-green { color: #188038; }
   .accent-yellow { color: #b06000; }
   .accent-red { color: #d93025; }
+  section.dense {
+    font-size: 22px;
+    padding: 44px 54px;
+  }
+  section.dense h1 {
+    font-size: 34px;
+    margin-bottom: 8px;
+  }
+  section.dense h2 {
+    font-size: 22px;
+  }
+  section.dense h3 {
+    font-size: 18px;
+  }
+  section.dense table {
+    font-size: 17px;
+    margin: 8px 0;
+  }
+  section.dense th,
+  section.dense td {
+    padding: 5px 8px;
+  }
+  section.dense pre {
+    font-size: 12px;
+    padding: 12px 14px;
+  }
+  section.dense .small {
+    font-size: 16px;
+  }
+  section.dense .compact {
+    font-size: 18px;
+  }
+  section.dense footer {
+    display: none;
+  }
   footer {
     color: #5f6368;
     font-size: 14px;
@@ -290,7 +325,7 @@ globally via `npm install -g @marp-team/marp-cli`).
 
 # Decision Lineage for AI Agents
 
-## From "Systems of Action" to "Systems of Governance" — every agent decision, every alternative, every reason, queryable in BigQuery.
+## From "Systems of Action" to "Systems of Governance" — extracted decisions, options, outcomes, and rationale queryable in BigQuery.
 
 <div class="footer-note">
 BigQuery Agent Analytics SDK · examples/decision_lineage_demo · Issue #98
@@ -330,28 +365,30 @@ Most operator obligations apply from **2 Aug 2026**; full rollout by **2 Aug 202
 <div class="card">
 
 ### GDPR
-**Article 22** — affected people have the right to **meaningful information** about the logic of solely-automated decisions.
+**Article 22** — protections around solely automated decisions with legal or similarly significant effects.
 
-<div class="small">Already in force since 2018; AI agents acting on user data inherit this baseline.</div>
+<div class="small">Access / transparency rights create the "meaningful information about logic" audit expectation.</div>
 
 </div>
 
 <div class="card">
 
 ### Digital Services Act
-**Article 26** — online platforms must publish information on **why each ad** was shown and the parameters used to target it.
+**Article 26** — online platforms presenting ads must disclose that an item is an ad, who paid for it, and the main targeting parameters.
 
-<div class="small">Applies to most ad-tech surfaces; in force from Feb 2024.</div>
+<div class="small">The demo's ad-planning lineage gives teams the upstream evidence behind those disclosures.</div>
 
 </div>
 
 </div>
 
 <div class="source-line">
-Sources: <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">EUR-Lex — Reg. 2024/1689</a> · <a href="https://gdpr-info.eu/art-22-gdpr/">GDPR Art. 22</a> · <a href="https://eur-lex.europa.eu/eli/reg/2022/2065/oj">DSA — Reg. 2022/2065</a>
+Sources: <a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/timeline/timeline-implementation-eu-ai-act">EU AI Act Service Desk timeline</a> · <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">GDPR — Reg. 2016/679</a> · <a href="https://eur-lex.europa.eu/eli/reg/2022/2065/oj">DSA — Reg. 2022/2065</a>
 </div>
 
 ---
+
+<!-- _class: dense -->
 
 # The threat — Article 99 penalty tiers
 
@@ -373,7 +410,7 @@ For an ad-tech buyer with <strong>€20B</strong> worldwide annual turnover, the
 </div>
 
 <div class="source-line">
-Source: <a href="https://artificialintelligenceact.eu/article/99/">EU AI Act — Article 99 (full text)</a> · <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Reg. 2024/1689 official journal</a>
+Source: <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Reg. 2024/1689 official journal, Article 99</a>
 </div>
 
 ---
@@ -402,9 +439,9 @@ The agent <em>does</em>. We trust the output.
 ### Today — Systems of Governance
 The same agents, plus a <strong>queryable evidence layer</strong>:
 <ul class="compact">
-<li>Every decision the agent committed</li>
-<li>Every alternative it weighed</li>
-<li>Every reason it rejected what it rejected</li>
+<li>The decisions extracted from the agent trace</li>
+<li>The options and scores the trace exposes</li>
+<li>The rationale attached to dropped options</li>
 <li>Linked to the trace span that produced it</li>
 </ul>
 
@@ -489,7 +526,7 @@ For any agent decision: the ability to retrieve <strong>what was chosen</strong>
 ### The pain
 A major brand-side media-buyer running a multi-agent media-planning stack:
 <ul class="compact">
-<li>Internal review board needed evidence for <strong>every campaign decision</strong> (audience, placement, creative, schedule)</li>
+<li>Internal review board needed evidence for campaign decisions (audience, placement, creative, schedule)</li>
 <li>Compliance team owed regulators a quarterly bias-audit report on demographic targeting</li>
 <li>An adjudicator asked <em>"why was this audience excluded from this campaign?"</em> — answer required digging through Slack threads + run logs</li>
 </ul>
@@ -530,8 +567,8 @@ Decision Lineage on BigQuery:
 <div class="metric-row" style="margin-top:24px">
 <div class="mini-stat"><strong>~3 weeks</strong><span>Audit response (before)</span></div>
 <div class="mini-stat"><strong>One query</strong><span>Audit response (after)</span></div>
-<div class="mini-stat"><strong>5 articles</strong><span>EU regulations addressed</span></div>
-<div class="mini-stat"><strong>Cents</strong><span>BQ cost per audit run</span></div>
+<div class="mini-stat"><strong>5 articles</strong><span>Regulatory hooks mapped</span></div>
+<div class="mini-stat"><strong>Low cost</strong><span>BQ query over existing graph</span></div>
 </div>
 
 ---
@@ -560,9 +597,9 @@ A compliance reviewer, equipped with the BigQuery Conversational Analytics panel
 <div>
 
 ### Why this format
-Bei's flow at issue #98: ground the demo in the **auditor experience**, not the engineering pipeline. The auditor types natural language; the system returns evidence; the regulator's article is satisfied.
+Ground the demo in the **auditor experience**, not the engineering pipeline. The reviewer starts with a business question; the system returns a reproducible evidence path that legal and engineering can inspect together.
 
-The next five slides show one question each — the natural-language prompt, the GQL the system generates, and the live answer from the demo dataset.
+The next slides show the natural-language prompt, the GQL pattern, and the live answer from the demo dataset.
 </div>
 </div>
 
@@ -738,6 +775,8 @@ Every regulator question is a single GQL query against the property graph. No re
 
 ---
 
+<!-- _class: dense -->
+
 # Step 1 — The ADK media-planner agent
 
 <div class="grid-2">
@@ -764,7 +803,7 @@ Every regulator question is a single GQL query against the property graph. No re
 <div>
 
 ### `agent/prompts.py` — system prompt
-The prompt instructs the agent to, for **every decision**:
+The prompt instructs the agent to, for each structured decision:
 
 <div class="soft-card compact">
 1. Name <strong>three candidate options</strong><br>
@@ -920,21 +959,25 @@ Three tables, one statement each, all per-session-scoped. The `edge_type` on `ca
 
 ---
 
+<!-- _class: dense -->
+
 # Step 4 — The 7 SDK backing tables
 
 | Table | Key | Written by | What it holds |
 |---|---|---|---|
-| `agent_events` | `span_id` | BQ AA Plugin (live) | Every plugin-recorded span (162 rows = 6 sessions × 27 spans) |
-| `extracted_biz_nodes` | `biz_node_id` | SDK `extract_biz_nodes` (MERGE) | Business entities AI.GENERATE found (Audience, Channel, Creative, Budget, Campaign, Placement, Product, Targeting) |
-| `context_cross_links` | `link_id` | SDK `create_cross_links` (DML) | Span ↔ BizNode references (1 per BizNode) |
-| `decision_points` | `decision_id` | SDK `store_decision_points` (load job) | Decisions AI.GENERATE extracted from LLM_RESPONSE text |
-| `candidates` | `candidate_id` | SDK `store_decision_points` (load job) | Every option weighed at every decision (typically 3 per decision: 1 SELECTED, 2 DROPPED) |
-| `made_decision_edges` | `edge_id` | SDK `create_decision_edges` (DML) | Span → Decision lineage |
-| `candidate_edges` | `edge_id` | SDK `create_decision_edges` (DML) | Decision → Candidate, with `edge_type ∈ {SELECTED_CANDIDATE, DROPPED_CANDIDATE}` |
+| `agent_events` | `span_id` | BQ AA Plugin | Plugin-recorded spans (162 rows = 6 sessions × 27 spans) |
+| `extracted_biz_nodes` | `biz_node_id` | SDK MERGE | Business entities from trace text |
+| `context_cross_links` | `link_id` | SDK DML | Span ↔ BizNode references |
+| `decision_points` | `decision_id` | SDK load job | Extracted decisions from `LLM_RESPONSE` text |
+| `candidates` | `candidate_id` | SDK load job | Extracted options per decision: selected or dropped |
+| `made_decision_edges` | `edge_id` | SDK DML | Span → Decision lineage |
+| `candidate_edges` | `edge_id` | SDK DML | Decision → Candidate, with selected / dropped edge type |
 
 Every backing table has `row_count == distinct_keys` after the SDK fix landed in PR #99 — the property-graph KEY contract holds end-to-end.
 
 ---
+
+<!-- _class: dense -->
 
 # Step 5 — The rich-graph projection layer
 
@@ -948,9 +991,11 @@ Every backing table has `row_count == distinct_keys` after the SDK fix landed in
 | `rich_candidate_statuses` | `candidates` | Distinct `OptionOutcome` values (SELECTED, DROPPED) |
 | `rich_rejection_reasons` | `candidates` | Distinct rejection-rationale strings as first-class nodes |
 
-Plus four edge tables (`rich_campaign_span_edges`, `rich_campaign_decision_edges`, `rich_decision_type_edges`, `rich_candidate_status_edges`, `rich_candidate_reason_edges`) wiring the new node labels back to the SDK-owned facts. Schema lives in `rich_property_graph.gql.tpl` and is byte-stable across reruns.
+Plus five edge projections wiring the new labels back to SDK-owned facts. Schema lives in `rich_property_graph.gql.tpl` and is deterministic across reruns.
 
 ---
+
+<!-- _class: dense -->
 
 # Step 6 — The 8 node labels (what each node means)
 
