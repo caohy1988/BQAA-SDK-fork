@@ -98,7 +98,7 @@ CREATE OR REPLACE PROPERTY GRAPH agent_analytics.agent_decisions_graph
 
 ### Step 3: Extract context graph from agent traces
 
-A single command reads the raw `agent_events`, extracts the entities and relationships your ontology declares, and populates the graph tables. For local development, run the materializer once:
+A single command reads raw `agent_events`, uses your **ontology** to identify the entities and relationships to extract, uses your **binding** to map them into BigQuery tables, and populates the tables behind the property graph. For local development, run the materializer once:
 
 ```bash
 bqaa context-graph \
