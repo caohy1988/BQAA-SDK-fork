@@ -28,6 +28,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `details.evalbench` names the scored job, version, table, and pinned
   session count. Reference in `docs/evalbench.md`; CI gate example in
   `examples/evalbench_score_gate.sh`.
+- **EvalBench versioned snapshots and failed-session contract (#435, slice 1)**
+  — `EvalBenchRun.materialize()` publishes an EvalBench run's events,
+  imported scores, and a manifest row into BQAA-owned tables
+  (`evalbench_agent_events`, `evalbench_scores_imported`,
+  `evalbench_import_manifest`) in an optional cross-project target; the ADK
+  plugin `agent_events` table is never written and is rejected as a
+  destination name. Rows are staged by load jobs and published in one
+  multi-statement transaction, so a failed re-import cannot leave a partial
+  corpus. `import_version` defaults to a content fingerprint of
+  results/scores/configs (unchanged source is a no-op, changed source is a
+  new version, an explicit version over drifted fingerprints raises unless
+  `replace=True`), and published `session_id`/`trace_id` are
+  version-specific. `from_bigquery(snapshot_at=...)` reads all source
+  tables `FOR SYSTEM_TIME AS OF` one instant. The W0.4 failed-session
+  contract ships as `EvalScorePolicy`, `failed_sessions_sql()` pinned to
+  one `import_version`, and `classify_sessions()` as the in-memory
+  reference: `returncode == 0` means completed, not passed, so
+  completed-but-low-scoring sessions and process failures are both
+  counted. `bq-agent-sdk evalbench-import` wraps it; reference in
+  `docs/evalbench.md`.
 - **EvalBench failed-session view and version-pinned consumer (#435, slice 2)**
   — `EvalBenchRun.materialize()` now keeps an `evalbench_failed_sessions`
   view in the target dataset pinned (as literals) to the job's latest

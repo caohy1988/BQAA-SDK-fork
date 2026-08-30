@@ -16,9 +16,9 @@ three rounds of review; the issue body points here.
   — **merged** — `materialize()`: immutable, versioned EvalBench snapshots
   plus the failed-session contract (W0.4). Reference: `docs/evalbench.md`.
 - [PR #452](https://github.com/GoogleCloudPlatform/BigQuery-Agent-Analytics-SDK/pull/452)
-  — open — `failed_sessions` view and the version-pinned consumer.
+  — **merged** — `failed_sessions` view and the version-pinned consumer.
 - [PR #453](https://github.com/GoogleCloudPlatform/BigQuery-Agent-Analytics-SDK/pull/453)
-  — open — `evalbench-score` CLI wrapping `Client.evaluate`.
+  — **merged** — `evalbench-score` CLI wrapping `Client.evaluate`.
 
 Those slices build the Week 1–2 substrate; they do not start the clock and do
 not touch the partner job, the D4 boundary, taxonomy content, or live traces.
